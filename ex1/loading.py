@@ -61,9 +61,8 @@ def run_analysis() -> None:
     die2 = numpy.random.randint(1, 7, size=100)
     sum = die1 + die2
 
-    # Build a DataFrame with pandas
-    df = pandas.DataFrame({"Die1": die1, "Die2": die2, "Sum": sum})
-    counts = df["Sum"].value_counts().sort_index()
+    # Build a Series with pandas and count the frequency of each sum
+    counts = pandas.Series(sum).value_counts().sort_index()
 
     # Bar chart with matplotlib
     counts.plot(kind="bar", color="steelblue", edgecolor="black")
