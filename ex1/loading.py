@@ -1,9 +1,7 @@
 """
-loading.py — Matrix Data Analysis Tool
-=======================================
 Demonstrates package management with pip and Poetry.
 
-This program simulates Matrix data using numpy, analyzes it with pandas,
+This program simulates data using numpy, analyzes it with pandas,
 and generates visualizations with matplotlib. It showcases proper dependency
 management by checking for required packages and providing installation
 instructions for both pip and Poetry.
@@ -12,9 +10,30 @@ instructions for both pip and Poetry.
 import sys
 
 
-# ── Dependency check ───────────────────────────────────────
+INSTALL_GUIDE = r"""
+┌───────────────────────────────────────────────────────────┐
+│                   INSTALLATION GUIDE                      │
+├───────────────────────────────────────────────────────────┤
+│                                                           │
+│  Option 1: Using pip                                      │
+│    $ pip install -r requirements.txt                      │
+│    $ python3 loading.py                                   │
+│                                                           │
+│  Option 2: Using Poetry                                   │
+│    $ poetry install                                       │
+│    $ poetry run python loading.py                         │
+│                                                           │
+│  pip:    Installs packages globally or in active venv     │
+│          Uses requirements.txt for flat listing           │
+│                                                           │
+│  Poetry: Creates isolated environment automatically       │
+│          Uses pyproject.toml with metadata & versions     │
+│          Locks exact deps in poetry.lock                  │
+└───────────────────────────────────────────────────────────┘
+"""
 
-def check_dependencies():
+
+def check_dependencies() -> tuple[dict[str, tuple[str, str]], list[str]]:
     """Check if required packages are installed and report their versions."""
     packages = [
         ("numpy",   "Numerical computation"),
@@ -38,41 +57,12 @@ def check_dependencies():
     return available, missing
 
 
-# ── Installation guide ──────────────────────────────────────
-
-INSTALL_GUIDE = r"""
-┌────────────────────────────────────────────────────────────┐
-│                   INSTALLATION GUIDE                       │
-├────────────────────────────────────────────────────────────┤
-│                                                           │
-│  Option 1: Using pip                                      │
-│    $ pip install -r requirements.txt                      │
-│    $ python3 loading.py                                   │
-│                                                           │
-│  Option 2: Using Poetry                                   │
-│    $ poetry install                                       │
-│    $ poetry run python loading.py                         │
-│                                                           │
-│  pip:    Installs packages globally or in active venv     │
-│          Uses requirements.txt for flat listing           │
-│                                                           │
-│  Poetry: Creates isolated environment automatically       │
-│          Uses pyproject.toml with metadata & versions     │
-│          Locks exact deps in poetry.lock                  │
-└───────────────────────────────────────────────────────────┘
-"""
-
-
-# ── Data analysis & visualisation ───────────────────────────
-
-def run_analysis():
-    import numpy
-    import pandas
-    import matplotlib
-    import matplotlib.pyplot as plot
+def run_analysis() -> None:
 
     print("\nAnalyzing Matrix data...")
-
+    import numpy
+    import pandas
+    import matplotlib.pyplot as plot
     # Generate data with numpy
     x = numpy.linspace(0, 10, 50)
     y = numpy.sin(x) + numpy.random.normal(0, 0.2, 50)
