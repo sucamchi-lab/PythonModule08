@@ -33,63 +33,58 @@ INSTALL_GUIDE = r"""
 """
 
 
-def check_dependencies() -> tuple[dict[str, tuple[str, str]], list[str]]:
-    """Check if required packages are installed and report their versions."""
-    packages = [
-        ("numpy",   "Numerical computation"),
-        ("pandas",     "Data manipulation"),
-        ("matplotlib",  "Visualization"),
-    ]
+def check_dependencies() -> list[str]:
 
-    available = {}
+    packages = ["numpy", "pandas", "matplotlib"]
     missing = []
 
-    for pkg_name, purpose in packages:
+    for package in packages:
         try:
-            pkg = __import__(pkg_name)
-            ver = getattr(pkg, "__version__", "unknown")
-            available[pkg_name] = (ver, purpose)
-            print(f"  [OK] {pkg_name} ({ver}) - {purpose} ready")
+            __import__(package)
+            print(f"  [OK] {package}")
         except ImportError:
-            missing.append(pkg_name)
-            print(f"  [FAIL] {pkg_name} - {purpose} NOT INSTALLED")
+            missing.append(package)
+            print(f"  [FAIL] {package}")
 
-    return available, missing
+    return missing
 
 
 def run_analysis() -> None:
 
-    print("\nAnalyzing Matrix data...")
+    print("\nRolling two 6-sided dice 100 times...")
     import numpy
-    import pandas
-    import matplotlib.pyplot as plot
-    # Generate data with numpy
-    x = numpy.linspace(0, 10, 50)
-    y = numpy.sin(x) + numpy.random.normal(0, 0.2, 50)
+    import pandas  # type: ignore
+    import matplotlib.pyplot as plot  # type: ignore
+
+    # Roll two dice 100 times using numpy
+    die1 = numpy.random.randint(1, 7, size=100)
+    die2 = numpy.random.randint(1, 7, size=100)
+    sums = die1 + die2
 
     # Build a DataFrame with pandas
-    df = pandas.DataFrame({"x": x, "y": y})
-    print(df.describe())
+    df = pandas.DataFrame({"Die1": die1, "Die2": die2, "Sum": sums})
+    counts = df["Sum"].value_counts().sort_index()
 
-    # Simple plot with matplotlib
-    plot.figure(figsize=(8, 4))
-    plot.plot(df["x"].to_numpy(), df["y"].to_numpy(), "g-", linewidth=1.5)
-    plot.title("Matrix Data — Sine Wave with Noise")
-    plot.xlabel("Time")
-    plot.ylabel("Amplitude")
-    plot.grid(True, alpha=0.3)
+    # Bar chart with matplotlib
+    counts.plot(kind="bar", color="steelblue", edgecolor="black")
+    plot.title("Sum of Two 6-Sided Dice (100 rolls)")
+    plot.xlabel("Sum")
+    plot.ylabel("Frequency")
+    plot.xticks(rotation=0)
+    plot.yticks(range(0, int(counts.max()) + 1))
     out = "matrix_analysis.png"
     plot.savefig(out)
     plot.close()
 
-    print(f"\nVisualization saved to: {out}")
+    print("\nAnalysis complete!")
+    print(f"Bar chart saved to: {out}")
 
 
 if __name__ == "__main__":
     print("LOADING STATUS: Loading programs...")
     print("Checking dependencies:")
 
-    _, missing = check_dependencies()
+    missing = check_dependencies()
 
     if missing:
         print("\n  Some dependencies are missing.")
