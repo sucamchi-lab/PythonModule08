@@ -28,7 +28,7 @@ INSTALL_GUIDE = r"""
 │                                                           │
 │  Poetry: Creates isolated environment automatically       │
 │          Uses pyproject.toml with metadata & versions     │
-│          Locks exact deps in poetry.lock                  │
+│          Handles dependency resolution and virtualenvs    │
 └───────────────────────────────────────────────────────────┘
 """
 
@@ -71,12 +71,12 @@ def run_analysis() -> None:
     plot.ylabel("Frequency")
     plot.xticks(rotation=0)
     plot.yticks(range(0, int(counts.max()) + 1))
-    out = "matrix_analysis.png"
-    plot.savefig(out)
+    file = "matrix_analysis.png"
+    plot.savefig(file)
     plot.close()
 
     print("\nAnalysis complete!")
-    print(f"Bar chart saved to: {out}")
+    print(f"Bar chart saved to: {file}")
 
 
 if __name__ == "__main__":
