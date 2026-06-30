@@ -1,0 +1,18 @@
+# Install with:   poetry install
+# Run with:       poetry run python loading.py
+
+[tool.poetry]
+name = "matrix-loading"
+version = "1.0.0"
+description = "Matrix Analysis Tool - pip vs Poetry dependency management"
+authors = ["Susi <sucamchi@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = ">=1.26.0"
+pandas = ">=2.1.0"
+matplotlib = ">=3.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
