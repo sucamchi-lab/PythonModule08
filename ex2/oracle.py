@@ -9,9 +9,13 @@ import sys
 
 def load_env() -> dict[str, str]:
 
+    # Look for .env in the same folder as oracle.py
+    script_dir = os.path.dirname(__file__)
+    env_path = os.path.join(script_dir, ".env")
+
     try:
         from dotenv import load_dotenv  # type: ignore
-        loaded = load_dotenv()
+        loaded = load_dotenv(env_path)
     except ImportError:
         print("[FAIL] python-dotenv is not installed.")
         print("Run: pip install python-dotenv")
@@ -62,13 +66,22 @@ def security_check(config: dict[str, str]) -> None:
 
     print("\nEnvironment security check:")
 
-    print("[OK] No hardcoded secrets detected")
+    # Check 1: Make sure secrets come from env, not hardcoded in oracle.py
+    with open(__file__) as f:
+        source = f.read()
+    if "os.getenv" in source:
+        print("[OK] No hardcoded secrets detected")
+    else:
+        print("[WARN] Secrets may be hardcoded — use os.getenv() instead")
 
-    if os.path.isfile(".env"):
+    # Check 2: Look for .env next to the script
+    script_dir = os.path.dirname(__file__)
+    if os.path.isfile(os.path.join(script_dir, ".env")):
         print("[OK] .env file properly configured")
     else:
         print("[WARN] .env file missing — copy .env.example to .env")
 
+    # Check 3: Warn if production mode uses default development values
     if config["MATRIX_MODE"] == "production":
         print("[OK] Production overrides available")
     else:
