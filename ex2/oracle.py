@@ -7,7 +7,7 @@ import os
 import sys
 
 
-def load_config() -> dict[str, str]:
+def load_env() -> dict[str, str]:
 
     try:
         from dotenv import load_dotenv  # type: ignore
@@ -79,7 +79,7 @@ def security_check(config: dict[str, str]) -> None:
 if __name__ == "__main__":
     print("ORACLE STATUS: Reading the Matrix...\n")
 
-    config = load_config()
+    config = load_env()
     show_config(config)
     security_check(config)
 
